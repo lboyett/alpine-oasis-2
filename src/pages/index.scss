@@ -1,0 +1,174 @@
+:root {
+  --gold-100: hsl(39, 39%, 90%);
+  --gold-200: hsl(39, 39%, 80%);
+  --gold-300: hsl(39, 39%, 70%);
+  --gold-400: hsl(39, 39%, 60%);
+  --gold-500: hsl(39, 39%, 50%);
+  --gold-600: hsl(39, 39%, 40%);
+  --gold-700: hsl(39, 39%, 30%);
+  --gold-800: hsl(39, 39%, 20%);
+  --gold-900: hsl(39, 39%, 10%);
+  --gray-50: hsl(0, 0%, 95%);
+  --gray-100: hsl(0, 0%, 90%);
+  --gray-200: hsl(0, 0%, 85%);
+  --gray-300: hsl(0, 0%, 70%);
+  --gray-400: hsl(0, 0%, 60%);
+  --gray-500: hsl(0, 0%, 50%);
+  --gray-600: hsl(0, 0%, 40%);
+  --gray-700: hsl(0, 0%, 30%);
+  --gray-800: hsl(0, 0%, 20%);
+  --gray-900: hsl(0, 0%, 10%);
+  --blue-100: hsl(208, 53%, 90%);
+  --blue-200: hsl(208, 53%, 80%);
+  --blue-300: hsl(208, 53%, 70%);
+  --blue-400: hsl(208, 53%, 60%);
+  --blue-500: hsl(208, 53%, 50%);
+  --blue-600: hsl(208, 53%, 40%);
+  --blue-700: hsl(208, 53%, 30%);
+  --blue-800: hsl(208, 53%, 20%);
+  --blue-900: hsl(208, 53%, 10%);
+}
+
+body {
+  height: 100vh;
+}
+
+.home-page {
+  width: 100%;
+  height: 100%;
+  background: var(--gray-50);
+
+  .content {
+    .container {
+      form {
+        color: blue;
+        transform: translateX(0);
+      }
+    }
+  }
+}
+
+@media (min-width: 850px) {
+  .home-page {
+    display: flex;
+    .sidebar {
+      width: 384px;
+      background: var(--blue-400);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      img {
+        width: 192px;
+      }
+      ul {
+        margin: 24px 0 0 0;
+        height: 256px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        li {
+          display: flex;
+          align-items: center;
+          gap: 32px;
+          color: var(--blue-700);
+          white-space: nowrap;
+          .circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--blue-700);
+            border: 1px solid var(--blue-700);
+            transition: all 0.2s ease-in-out;
+          }
+        }
+        .active-li {
+          .circle {
+            transform: scale(1.5);
+            border-radius: 50%;
+            background: var(--blue-200);
+            border: 1px solid var(--blue-700);
+            transition: all 0.2s ease-in-out;
+          }
+          .page-name {
+            color: var(--blue-900);
+            font-size: 20px;
+          }
+        }
+        .grow {
+          border-left: 1px solid var(--blue-700);
+          width: 0;
+          margin: 0 0 0 5px;
+          border-style: dashed;
+        }
+      }
+    }
+    .content {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      max-width: 800px;
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 448px;
+        overflow: hidden;
+        h1 {
+          font-size: 48px;
+          color: var(--blue-800);
+          border-bottom: 1px solid var(--blue-800);
+        }
+        form {
+          width: 100%;
+          color: var(--gray-600);
+          display: flex;
+          margin: 24px 0 0 0;
+          .page {
+            min-width: 448px;
+            padding: 4px;
+            h2 {
+              width: max-content;
+              font-size: 24px;
+              color: var(--blue-800);
+            }
+            .form-field {
+              display: flex;
+              flex-direction: column;
+              gap: 4px;
+              margin-top: 48px;
+              input {
+                font-size: 18px;
+                padding: 4px 12px;
+                border-radius: 4px;
+              }
+            }
+            .form-field:first-of-type {
+              margin-top: 24px;
+            }
+            fieldset {
+              margin: 48px 0;
+              input {
+                margin: 8px 0;
+              }
+            }
+          }
+        }
+        .buttons {
+          display: flex;
+          gap: 8px;
+          button {
+            display: inline-flex;
+            color: var(--blue-900);
+            span {
+              font-size: 48px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
