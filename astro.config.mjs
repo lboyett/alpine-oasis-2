@@ -6,6 +6,5 @@ import tailwind from "@astrojs/tailwind";
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind()],
-  site: "https://lboyett.github.io",
-  base: "alpine-oasis-2",
+  site: "https://alpineoasisrentals.com",
 });

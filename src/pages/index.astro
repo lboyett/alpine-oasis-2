@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import "./index.scss";
 import logo from "../assets/logo.png";
+import PagesDisplay from "../components/PagesDisplay.astro";
 ---
 
 <Layout
@@ -12,47 +13,24 @@ import logo from "../assets/logo.png";
         <h1>SCREENING FORM</h1>
       </div>
       <img src={logo.src} alt="" class="desktop-logo" />
-      <ul class="pages-display">
-        <li class="active-li" id="li-0">
-          <div class="circle"></div><div class="page-name">
-            Personal Information
-          </div>
-        </li>
-        <div class="grow"></div>
-        <li id="li-1">
-          <div class="circle"></div><div class="page-name">Tenant History</div>
-        </li>
-        <div class="grow"></div>
-        <li id="li-2">
-          <div class="circle"></div><div class="page-name">
-            Prev. Rental Information
-          </div>
-        </li>
-        <div class="grow"></div>
-
-        <li id="li-3">
-          <div class="circle"></div><div class="page-name">
-            Misc. Information
-          </div>
-        </li>
-      </ul>
+      <PagesDisplay />
     </div>
     <h1 class="thank-you">Thank you for your submission!</h1>
     <div class="content">
       <div class="container">
         <h1>SCREENING FORM</h1>
         <form action="">
-          <!-- <input
+          <input
             type="hidden"
             name="access_key"
             value="f4205424-50b4-4b5c-8459-71f768ddeb89"
             class="luke-key"
-          /> -->
-          <input
+          />
+          <!-- <input
             type="hidden"
             name="access_key"
             value="476cb9f1-a26b-4da6-b5e9-c463c81ae288"
-          />
+          /> -->
 
           <div class="page first-page active-page" id="0">
             <h2>Personal Information</h2>
