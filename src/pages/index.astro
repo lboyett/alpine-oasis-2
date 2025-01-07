@@ -57,6 +57,15 @@ import PagesDisplay from "../components/PagesDisplay.astro";
               />
             </div>
             <div class="form-field">
+              <label for="phone-number">Email</label>
+              <input
+                type="text"
+                name="email"
+                placeholder="john@example.com"
+                required
+              />
+            </div>
+            <div class="form-field">
               <label for="occupation">Current Employer & Occupation</label>
               <input
                 name="occupation"
@@ -68,6 +77,14 @@ import PagesDisplay from "../components/PagesDisplay.astro";
           </div>
           <div class="page second-page" id="1">
             <h2>Tenant History</h2>
+            <div class="form-field">
+              <label for="date-of-birth">Planned Move-in Date</label>
+              <input type="date" name="move-in" required />
+            </div>
+            <div class="form-field">
+              <label for="date-of-birth">Planned Move-Out Date</label>
+              <input type="date" name="move-out" required />
+            </div>
             <fieldset>
               <legend
                 >Have you declared bankruptcy in the past 7 years?
@@ -196,6 +213,25 @@ import PagesDisplay from "../components/PagesDisplay.astro";
           </div>
           <div class="page fourth-page" id="3">
             <h2>Misc. Information</h2>
+            <fieldset>
+              <legend>Are there any roommates? </legend>
+              <input
+                type="radio"
+                name="felony"
+                value="yes"
+                class="radio"
+                required
+              />
+              <label for="yes">Yes</label>
+              <input
+                type="radio"
+                name="felony"
+                value="no"
+                class="radio"
+                required
+              />
+              <label for="no">No</label>
+            </fieldset>
             <div class="form-field">
               <label for="interests"
                 >What are some hobbies or interests that you currently have?</label
