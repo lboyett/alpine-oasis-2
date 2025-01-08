@@ -213,25 +213,6 @@ import PagesDisplay from "../components/PagesDisplay.astro";
           </div>
           <div class="page fourth-page" id="3">
             <h2>Misc. Information</h2>
-            <fieldset>
-              <legend>Are there any roommates? </legend>
-              <input
-                type="radio"
-                name="felony"
-                value="yes"
-                class="radio"
-                required
-              />
-              <label for="yes">Yes</label>
-              <input
-                type="radio"
-                name="felony"
-                value="no"
-                class="radio"
-                required
-              />
-              <label for="no">No</label>
-            </fieldset>
             <div class="form-field">
               <label for="interests"
                 >What are some hobbies or interests that you currently have?</label
@@ -244,6 +225,77 @@ import PagesDisplay from "../components/PagesDisplay.astro";
                 required
               />
             </div>
+            <fieldset>
+              <legend>Are there any roommates? </legend>
+              <input
+                type="radio"
+                name="roommates"
+                value="yes"
+                class="radio"
+                required
+              />
+              <label for="yes">Yes</label>
+              <input
+                type="radio"
+                name="roommates"
+                value="no"
+                class="radio"
+                required
+              />
+              <label for="no">No</label>
+            </fieldset>
+            <fieldset>
+              <legend
+                >Do you agree to hold renter's insurance while leasing?</legend
+              >
+              <input
+                type="radio"
+                name="insurance"
+                value="yes"
+                class="radio"
+                required
+              />
+              <label for="yes">Yes</label>
+              <input
+                type="radio"
+                name="insurance"
+                value="no"
+                class="radio"
+                required
+              />
+              <label for="no">No</label>
+            </fieldset>
+            <fieldset>
+              <legend
+                ><i>For the Farmington property only:</i> Do you understand that
+                the unit is a duplex (with separate entries, kitchens, and bathrooms)
+                and that laundry is shared?</legend
+              >
+              <input
+                type="radio"
+                name="duplex"
+                value="yes"
+                class="radio"
+                required
+              />
+              <label for="yes">Yes</label>
+              <input
+                type="radio"
+                name="duplex"
+                value="no"
+                class="radio"
+                required
+              />
+              <label for="no">No</label>
+              <input
+                type="radio"
+                name="duplex"
+                value="no"
+                class="radio"
+                required
+              />
+              <label for="no">N/A</label>
+            </fieldset>
             <!-- <fieldset>
               <legend class="legend-italic"
                 >Do you understand that this is a single family home that is
