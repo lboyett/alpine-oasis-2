@@ -266,11 +266,11 @@ import PagesDisplay from "../components/PagesDisplay.astro";
               <label for="no">No</label>
             </fieldset>
             <fieldset>
-              <legend
-                ><i>For the Farmington property only:</i> Do you understand that
-                the unit is a duplex (with separate entries, kitchens, and bathrooms)
-                and that laundry is shared?</legend
-              >
+              <legend>
+                For the Farmington property only: Property is non conforming
+                duplex and laundry is shared. Each side has separate kitchens
+                and entrances.
+              </legend>
               <input
                 type="radio"
                 name="duplex"
@@ -278,7 +278,7 @@ import PagesDisplay from "../components/PagesDisplay.astro";
                 class="radio"
                 required
               />
-              <label for="yes">Yes</label>
+              <label for="yes">Acknowledged</label>
               <input
                 type="radio"
                 name="duplex"
@@ -286,7 +286,22 @@ import PagesDisplay from "../components/PagesDisplay.astro";
                 class="radio"
                 required
               />
-              <label for="no">No</label>
+              <label for="no">N/A</label>
+            </fieldset>
+            <fieldset>
+              <legend>
+                For the Aztec property only: Property is non conforming duplex
+                and nothing is shared. Each side has separate kitchens, laundry,
+                and entrances.
+              </legend>
+              <input
+                type="radio"
+                name="duplex"
+                value="yes"
+                class="radio"
+                required
+              />
+              <label for="yes">Acknowledged</label>
               <input
                 type="radio"
                 name="duplex"
@@ -329,203 +344,207 @@ import PagesDisplay from "../components/PagesDisplay.astro";
               </div>
             </div>
           </div>
+          <div class="buttons">
+            <button class="prev"
+              ><span class="material-symbols-outlined">
+                arrow_back
+              </span></button
+            >
+            <button class="next"
+              ><span class="material-symbols-outlined">
+                arrow_forward
+              </span></button
+            >
+          </div>
         </form>
-        <div class="buttons">
-          <button class="prev"
-            ><span class="material-symbols-outlined"> arrow_back </span></button
-          >
-          <button class="next"
-            ><span class="material-symbols-outlined">
-              arrow_forward
-            </span></button
-          >
-        </div>
       </div>
     </div>
-  </div></Layout
->
+  </div>
 
-<script>
-  let invalidFormAttempted = false;
-  async function handleFormSubmit() {
-    const form = document.querySelector("form");
-    if (!form) return;
+  <script>
+    let invalidFormAttempted = false;
+    async function handleFormSubmit() {
+      const form = document.querySelector("form");
+      if (!form) return;
 
-    form.addEventListener(
-      "invalid",
-      function (event) {
+      form.addEventListener(
+        "invalid",
+        function (event) {
+          event.preventDefault();
+          if (invalidFormAttempted) {
+            const errorMessage = document.querySelector(
+              ".error-message",
+            ) as HTMLDivElement;
+            if (!errorMessage) return;
+            errorMessage.style.display = "flex";
+            form.classList.add("attempted-submit");
+            invalidFormAttempted = true;
+            const pages = document.querySelectorAll(".page");
+            for (const page of pages) {
+              if (page.querySelector("input:invalid")) {
+                const li = document.getElementById(`li-${page.id}`);
+                li?.classList.add("invalid-li");
+              }
+            }
+          }
+        },
+        true,
+      );
+
+      document
+        .querySelector('button[type="submit"]')
+        ?.addEventListener("click", () => {
+          invalidFormAttempted = true;
+        });
+
+      form.addEventListener("submit", async (event) => {
         event.preventDefault();
-        if (invalidFormAttempted) {
+        invalidFormAttempted = false;
+        console.log("trying to submit...");
+        const formData = new FormData(form);
+        type Web3FormsResponse = {
+          success: boolean;
+          message: string;
+          data: any;
+        };
+        const submitButton = document.querySelector(
+          'button[type="submit"]',
+        ) as HTMLButtonElement;
+        if (!submitButton) return;
+        submitButton.disabled = true;
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          body: formData,
+        });
+        const responseData: Web3FormsResponse = await response.json();
+        if (responseData.success) {
+          const content = document.querySelector(".content") as HTMLDivElement;
+          if (!content) return;
+          content.style.display = "none";
+          const thankYou = document.querySelector(
+            ".thank-you",
+          ) as HTMLDivElement;
+          thankYou.style.display = "block";
+        } else {
           const errorMessage = document.querySelector(
             ".error-message",
           ) as HTMLDivElement;
           if (!errorMessage) return;
           errorMessage.style.display = "flex";
-          form.classList.add("attempted-submit");
-          invalidFormAttempted = true;
-          const pages = document.querySelectorAll(".page");
-          for (const page of pages) {
-            if (page.querySelector("input:invalid")) {
-              const li = document.getElementById(`li-${page.id}`);
-              li?.classList.add("invalid-li");
-            }
-          }
-        }
-      },
-      true,
-    );
-
-    document
-      .querySelector('button[type="submit"]')
-      ?.addEventListener("click", () => {
-        invalidFormAttempted = true;
-      });
-
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      invalidFormAttempted = false;
-      console.log("trying to submit...");
-      const formData = new FormData(form);
-      type Web3FormsResponse = {
-        success: boolean;
-        message: string;
-        data: any;
-      };
-      const submitButton = document.querySelector(
-        'button[type="submit"]',
-      ) as HTMLButtonElement;
-      if (!submitButton) return;
-      submitButton.disabled = true;
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData,
-      });
-      const responseData: Web3FormsResponse = await response.json();
-      if (responseData.success) {
-        const content = document.querySelector(".content") as HTMLDivElement;
-        if (!content) return;
-        content.style.display = "none";
-        const thankYou = document.querySelector(".thank-you") as HTMLDivElement;
-        thankYou.style.display = "block";
-      } else {
-        const errorMessage = document.querySelector(
-          ".error-message",
-        ) as HTMLDivElement;
-        if (!errorMessage) return;
-        errorMessage.style.display = "flex";
-        const errorText = document.querySelector(
-          ".error-text",
-        ) as HTMLDivElement;
-        if (!errorText) return;
-        errorText.textContent = "Failed to send form. Please try again.";
-        submitButton.disabled = false;
-      }
-    });
-  }
-
-  const inputs = document.querySelectorAll("input");
-  for (const input of inputs) {
-    input.addEventListener("change", () => {
-      if (!invalidFormAttempted) return;
-      const pages = document.querySelectorAll(".page");
-      for (const page of pages) {
-        if (!page.querySelector("input:invalid")) {
-          const errorMessage = document.querySelector(
-            ".error-message",
+          const errorText = document.querySelector(
+            ".error-text",
           ) as HTMLDivElement;
-          errorMessage.style.display = "none";
+          if (!errorText) return;
+          errorText.textContent = "Failed to send form. Please try again.";
+          submitButton.disabled = false;
         }
-      }
-      if (input.checkValidity()) {
-        const parentPage = input.closest(".page");
-        const pageInputs = parentPage?.querySelectorAll("input");
-        if (!pageInputs || !parentPage) return;
-        let invalid = false;
-        for (const pageInput of pageInputs) {
-          if (!pageInput.checkValidity()) {
-            invalid = true;
-          }
-        }
-        if (!invalid) {
-          const li = document.getElementById(`li-${parentPage.id}`);
-          li?.classList.remove("invalid-li");
-        }
-      }
-    });
-  }
-
-  handleFormSubmit();
-</script>
-
-<script>
-  function nextPage() {
-    const element = document.querySelector(".active-page");
-    const currentPage = element?.id;
-    if (!currentPage) return;
-    if (+currentPage >= 3) return;
-    const currentLi = document.getElementById(`li-${currentPage}`);
-    currentLi?.classList.remove("active-li");
-    element?.classList.remove("active-page");
-    const nextPage = +currentPage + 1;
-    const nextElement = document.getElementById(`${nextPage}`);
-    nextElement?.classList.add("active-page");
-    const form = document.querySelector("form");
-    if (!form) return;
-    const incrementWidth = window.innerWidth > 850 ? 448 : window.innerWidth;
-    form.style.transform = `translateX(-${incrementWidth * +nextPage}px)`;
-    const nextLi = document.getElementById(`li-${nextPage}`);
-    nextLi?.classList.add("active-li");
-  }
-
-  function prevPage() {
-    const element = document.querySelector(".active-page");
-    const currentPage = element?.id;
-    if (currentPage === "0") return;
-    if (!currentPage) return;
-    const currentLi = document.getElementById(`li-${currentPage}`);
-    currentLi?.classList.remove("active-li");
-    element?.classList.remove("active-page");
-    const prevPage = +currentPage - 1;
-    const prevElement = document.getElementById(`${prevPage}`);
-    prevElement?.classList.add("active-page");
-    const form = document.querySelector("form");
-    if (!form) return;
-    const incrementWidth = window.innerWidth > 850 ? 448 : window.innerWidth;
-    form.style.transform = `translateX(-${incrementWidth * +prevPage}px)`;
-    const prevLi = document.getElementById(`li-${prevPage}`);
-    prevLi?.classList.add("active-li");
-  }
-
-  function jumpToPage(li: Element) {
-    const page = li.id.split("-")[1];
-    const element = document.querySelector(".active-page");
-    const currentPage = element?.id;
-    if (!currentPage) return;
-    const currentLi = document.getElementById(`li-${currentPage}`);
-    currentLi?.classList.remove("active-li");
-    element?.classList.remove("active-page");
-    const nextElement = document.getElementById(`${page}`);
-    nextElement?.classList.add("active-page");
-    const form = document.querySelector("form");
-    if (!form) return;
-    const incrementWidth = window.innerWidth > 850 ? 448 : window.innerWidth;
-    form.style.transform = `translateX(-${incrementWidth * +page}px)`;
-    const nextLi = document.getElementById(`li-${page}`);
-    nextLi?.classList.add("active-li");
-  }
-
-  function addEventListeners() {
-    const nextButton = document.querySelector(".next");
-    const prevButton = document.querySelector(".prev");
-    nextButton?.addEventListener("click", nextPage);
-    prevButton?.addEventListener("click", prevPage);
-    const lis = document.querySelectorAll(".pages-display li");
-    for (const li of lis) {
-      li.addEventListener("click", () => {
-        jumpToPage(li);
       });
     }
-  }
 
-  addEventListeners();
-</script>
+    const inputs = document.querySelectorAll("input");
+    for (const input of inputs) {
+      input.addEventListener("change", () => {
+        if (!invalidFormAttempted) return;
+        const pages = document.querySelectorAll(".page");
+        for (const page of pages) {
+          if (!page.querySelector("input:invalid")) {
+            const errorMessage = document.querySelector(
+              ".error-message",
+            ) as HTMLDivElement;
+            errorMessage.style.display = "none";
+          }
+        }
+        if (input.checkValidity()) {
+          const parentPage = input.closest(".page");
+          const pageInputs = parentPage?.querySelectorAll("input");
+          if (!pageInputs || !parentPage) return;
+          let invalid = false;
+          for (const pageInput of pageInputs) {
+            if (!pageInput.checkValidity()) {
+              invalid = true;
+            }
+          }
+          if (!invalid) {
+            const li = document.getElementById(`li-${parentPage.id}`);
+            li?.classList.remove("invalid-li");
+          }
+        }
+      });
+    }
+
+    handleFormSubmit();
+  </script>
+
+  <script>
+    function nextPage() {
+      const element = document.querySelector(".active-page");
+      const currentPage = element?.id;
+      if (!currentPage) return;
+      if (+currentPage >= 3) return;
+      const currentLi = document.getElementById(`li-${currentPage}`);
+      currentLi?.classList.remove("active-li");
+      element?.classList.remove("active-page");
+      const nextPage = +currentPage + 1;
+      const nextElement = document.getElementById(`${nextPage}`);
+      nextElement?.classList.add("active-page");
+      const form = document.querySelector("form");
+      if (!form) return;
+      const incrementWidth = window.innerWidth > 850 ? 448 : window.innerWidth;
+      form.style.transform = `translateX(-${incrementWidth * +nextPage}px)`;
+      const nextLi = document.getElementById(`li-${nextPage}`);
+      nextLi?.classList.add("active-li");
+    }
+
+    function prevPage() {
+      const element = document.querySelector(".active-page");
+      const currentPage = element?.id;
+      if (currentPage === "0") return;
+      if (!currentPage) return;
+      const currentLi = document.getElementById(`li-${currentPage}`);
+      currentLi?.classList.remove("active-li");
+      element?.classList.remove("active-page");
+      const prevPage = +currentPage - 1;
+      const prevElement = document.getElementById(`${prevPage}`);
+      prevElement?.classList.add("active-page");
+      const form = document.querySelector("form");
+      if (!form) return;
+      const incrementWidth = window.innerWidth > 850 ? 448 : window.innerWidth;
+      form.style.transform = `translateX(-${incrementWidth * +prevPage}px)`;
+      const prevLi = document.getElementById(`li-${prevPage}`);
+      prevLi?.classList.add("active-li");
+    }
+
+    function jumpToPage(li: Element) {
+      const page = li.id.split("-")[1];
+      const element = document.querySelector(".active-page");
+      const currentPage = element?.id;
+      if (!currentPage) return;
+      const currentLi = document.getElementById(`li-${currentPage}`);
+      currentLi?.classList.remove("active-li");
+      element?.classList.remove("active-page");
+      const nextElement = document.getElementById(`${page}`);
+      nextElement?.classList.add("active-page");
+      const form = document.querySelector("form");
+      if (!form) return;
+      const incrementWidth = window.innerWidth > 850 ? 448 : window.innerWidth;
+      form.style.transform = `translateX(-${incrementWidth * +page}px)`;
+      const nextLi = document.getElementById(`li-${page}`);
+      nextLi?.classList.add("active-li");
+    }
+
+    function addEventListeners() {
+      const nextButton = document.querySelector(".next");
+      const prevButton = document.querySelector(".prev");
+      nextButton?.addEventListener("click", nextPage);
+      prevButton?.addEventListener("click", prevPage);
+      const lis = document.querySelectorAll(".pages-display li");
+      for (const li of lis) {
+        li.addEventListener("click", () => {
+          jumpToPage(li);
+        });
+      }
+    }
+
+    addEventListeners();
+  </script>
+</Layout>
