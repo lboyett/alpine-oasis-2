@@ -415,6 +415,10 @@ form.attempted-submit input[type="radio"]:invalid {
             }
             fieldset {
               margin: 48px 0;
+              .city {
+                font-weight: 800;
+                font-size: 20px;
+              }
               input {
                 margin: 8px 0;
               }
